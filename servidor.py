@@ -1,8 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 import numpy as np
-from joblib import load
-from werkzeug.utils import secure_filename
-import os
 
 #Cargar el modelo
 #dt = load('modelo.joblib')
