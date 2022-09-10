@@ -1,41 +1,11 @@
-from flask import Flask, request, jsonify, render_template
-import numpy as np
+from flask import Flask, request, jsonify
+import csv
 
-#Cargar el modelo
-#dt = load('modelo.joblib')
-
-#Generar el servidor (Back-end)
 server = Flask(__name__)
-
-
-""" @server.route("/formulario",methods=['GET'])
-def formulario():
-    return render_template('pagina.html') """
-
-#Envio de datos a través de Archivos
-""" @servidorWeb.route('/modeloFile', methods=['POST'])
-def modeloFile():
-    f = request.files['file']
-    filename=secure_filename(f.filename)
-    path=os.path.join(os.getcwd(),'files',filename)
-    f.save(path)
-    file = open(path, "r")
-    
-    for x in file:
-        info=x.split()
-    print(info)
-    datosEntrada = np.array([
-            float(info[0]),
-            float(info[1]),
-            float(info[2])
-        ])
-    #Utilizar el modelo
-    resultado=dt.predict(datosEntrada.reshape(1,-1))
-    #Regresar la salida del modelo
-    return jsonify({"Resultado":str(resultado[0])}) """
 
 @server.route('/form', methods=['POST'])
 def input_data():
+    number_of_passengers = int(request.json["number_of_passengers"])
     home_planet = request.json["HomePlanet"]
     cryo_sleep = request.json["CryoSleep"]
     cabin = request.json["Cabin"]
@@ -48,7 +18,15 @@ def input_data():
     spa = request.json["Spa"]
     vrdeck = request.json["VRDeck"]
     name = request.json["Name"]
-    input_data = np.array([home_planet, cryo_sleep, cabin, destination, age, vip, room_service, food_court, shopping, spa, vrdeck, name])
+
+    df_header = ['HomePlanet', 'CryoSleep', 'Cabin', 'Destination', 'Age', 'VIP', 'RoomService', 'FoodCourt', 'Shopping', 'Spa', 'VRDeck', 'Name']
+    with open('test.csv', 'w', encoding='UTF8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(df_header)
+                for i in range(0, number_of_passengers):
+                    input_data = [home_planet[i], cryo_sleep[i], cabin[i], destination[i], age[i], vip[i], room_service[i], food_court[i], shopping[i], spa[i], vrdeck[i], name[i]]
+                    df_data = input_data
+                    writer.writerow(df_data)
     return jsonify({"message": "Success"}), 200
 
 
