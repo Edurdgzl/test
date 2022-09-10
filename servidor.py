@@ -55,6 +55,7 @@ def input_data():
 @server.route('/test', methods=['POST'])
 def test_post():
     test = request.json["name"]
+    print(test)
     return jsonify({"message": "Success", "name": test}), 200
 
 
