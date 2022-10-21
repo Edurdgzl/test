@@ -14,15 +14,15 @@ application = app = Flask(__name__)
 cors = CORS(application)
 
 # Ruta de testing
-@application.route("/")
+@app.route("/")
 def hello_there():
     return "General Kenobi", 200
 
 # Registro de blueprints
 from Global.Routes.Store import GLOBAL_STORE_BLUEPRINT
-application.register_blueprint(GLOBAL_STORE_BLUEPRINT, url_prefix='/store')
+app.register_blueprint(GLOBAL_STORE_BLUEPRINT, url_prefix='/store')
 # Configuraciones de la app
 
 if __name__ == "__main__":
-    application.run(debug=True)
+    app.run(debug=True)
 
